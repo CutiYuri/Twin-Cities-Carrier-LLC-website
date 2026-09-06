@@ -12,6 +12,27 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+		<style>
+			.copyable {
+				cursor: pointer;
+				position: relative;
+				border-bottom: 1px dashed rgba(255, 255, 255, 0.35);
+				transition: opacity 0.2s ease;
+			}
+			.copyable:hover {
+				opacity: 0.75;
+			}
+			.copyable .copied-tag {
+				display: none;
+				margin-left: 0.6em;
+				font-size: 0.75em;
+				vertical-align: middle;
+				opacity: 0.8;
+			}
+			.copyable.copied .copied-tag {
+				display: inline;
+			}
+		</style>
 	</head>
 	<body class="is-preload">
 
@@ -35,55 +56,28 @@
 					<section id="main" class="wrapper">
 						<div class="inner">
 							<h1 class="major">Get In Touch</h1>
-							<p>Have a load to move, or a question about scheduling a run? Send us the details below and we'll get back to you &mdash; usually the same business day.</p>
+							<p>Have a load to move, or a question about scheduling a run? Reach out using the information below and we'll get back to you &mdash; usually the same business day.</p>
 
-							<div class="split style1">
-								<section>
-									<!-- NOTE: this form has no backend attached yet. Point the "action"
-									     at a form service (e.g. Formspree) or your own endpoint. -->
-									<form method="post" action="#">
-										<div class="fields">
-											<div class="field half">
-												<label for="name">Name</label>
-												<input type="text" name="name" id="name" />
-											</div>
-											<div class="field half">
-												<label for="email">Email</label>
-												<input type="text" name="email" id="email" />
-											</div>
-											<div class="field">
-												<label for="message">Tell us about your load</label>
-												<textarea name="message" id="message" rows="5" placeholder="Pickup and delivery location, freight type, weight, and preferred dates"></textarea>
-											</div>
-										</div>
-										<ul class="actions">
-											<li><a href="" class="button submit">Send Message</a></li>
-										</ul>
-									</form>
-								</section>
-								<section>
-									<ul class="contact">
-										<li>
-											<h3>Based in</h3>
-											<span>Roseville, MN<br />
-											Serving the Twin Cities &amp; the Midwest</span>
-										</li>
-										<li>
-											<h3>Phone</h3>
-											<span>651-325-5285</span>
-										</li>
-										<li>
-											<h3>Email</h3>
-											<a href="#">tccarrierinc@yahoo.com</a>
-										</li>
-										<li>
-											<h3>Credentials</h3>
-											<span>USDOT #1905892<br />
-											MC #686416</span>
-										</li>
-									</ul>
-								</section>
-							</div>
+							<ul class="contact">
+								<li>
+									<h3>Based in</h3>
+									<span>Roseville, MN<br />
+									Serving the Twin Cities &amp; the Midwest</span>
+								</li>
+								<li>
+									<h3>Phone</h3>
+									<span class="copyable" data-copy="651-325-5285" title="Click to copy">651-325-5285</span>
+								</li>
+								<li>
+									<h3>Email</h3>
+									<span class="copyable" data-copy="tccarrierinc@yahoo.com" title="Click to copy">tccarrierinc@yahoo.com</span>
+								</li>
+								<li>
+									<h3>Credentials</h3>
+									<span>USDOT #1905892<br />
+									MC #686416</span>
+								</li>
+							</ul>
 						</div>
 					</section>
 
@@ -108,6 +102,38 @@
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
+			<script>
+				document.querySelectorAll('.copyable').forEach(function (el) {
+					el.addEventListener('click', function () {
+						var text = el.getAttribute('data-copy');
+						var tag = el.querySelector('.copied-tag');
+
+						function showCopied() {
+							el.classList.add('copied');
+							setTimeout(function () {
+								el.classList.remove('copied');
+							}, 1500);
+						}
+
+						if (navigator.clipboard && navigator.clipboard.writeText) {
+							navigator.clipboard.writeText(text).then(showCopied);
+						} else {
+							var temp = document.createElement('textarea');
+							temp.value = text;
+							document.body.appendChild(temp);
+							temp.select();
+							document.execCommand('copy');
+							document.body.removeChild(temp);
+							showCopied();
+						}
+					});
+
+					var tagSpan = document.createElement('span');
+					tagSpan.className = 'copied-tag';
+					tagSpan.textContent = '(copied!)';
+					el.appendChild(tagSpan);
+				});
+			</script>
 
 	</body>
 </html>
